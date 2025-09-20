@@ -1,30 +1,34 @@
 import React from "react";
 
-export default function DroneDetails({ drone }) {
+export default function DroneDetails({ selectedDrone }) {
+  if (!selectedDrone) return null;
   return (
     <div className="p-6 w-80 bg-white h-full shadow-lg">
       <h2 className="text-xl font-bold mb-4 text-red-500">Drone Details</h2>
       <ul className="space-y-2">
         <li>
-          <span className="font-semibold">Name:</span> {drone.name}
+          <span className="font-semibold">Name:</span> {selectedDrone.name}
         </li>
         <li>
-          <span className="font-semibold">Latitude:</span> {drone.lat}
+          <span className="font-semibold">Latitude:</span> {selectedDrone.lat}
         </li>
         <li>
-          <span className="font-semibold">Longitude:</span> {drone.lng}
+          <span className="font-semibold">Longitude:</span> {selectedDrone.lng}
         </li>
         <li>
-          <span className="font-semibold">Altitude:</span> {drone.altitude} m
+          <span className="font-semibold">Altitude:</span>{" "}
+          {selectedDrone.altitude} m
         </li>
         <li>
-          <span className="font-semibold">Speed:</span> {drone.speed} m/s
+          <span className="font-semibold">Speed:</span> {selectedDrone.speed}{" "}
+          m/s
         </li>
         <li>
-          <span className="font-semibold">Heading:</span> {drone.heading}°
+          <span className="font-semibold">Heading:</span>{" "}
+          {selectedDrone.heading}°
         </li>
         <li>
-          <span className="font-semibold">Status:</span> {drone.status}
+          <span className="font-semibold">Status:</span> {selectedDrone.status}
         </li>
       </ul>
     </div>

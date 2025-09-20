@@ -10,7 +10,7 @@ const DRONE_ICON = (heading = 0) => {
   };
 };
 
-export default function MapView({ drone }) {
+export default function MapView({ drone, onDroneClick }) {
   const mapRef = useRef(null);
   const markerRef = useRef(null);
 
@@ -32,11 +32,16 @@ export default function MapView({ drone }) {
         icon: DRONE_ICON(drone.heading),
         title: drone.name,
       });
+      if (onDroneClick) {
+        markerRef.current.addListener("click", () => {
+          onDroneClick(drone);
+        });
+      }
     });
     return () => {
       if (markerRef.current) markerRef.current.setMap(null);
     };
-  }, [drone]);
+  }, [drone, onDroneClick]);
 
   return <div ref={mapRef} className="w-full h-[640px]" />;
 }

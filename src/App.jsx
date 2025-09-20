@@ -82,14 +82,25 @@ function LoginModal({ onClose }) {
 
 export default function App() {
   const [showLogin, setShowLogin] = useState(false);
+  const [selectedDrone, setSelectedDrone] = useState(null);
+
+  // Handler for clicking the drone marker
+  const handleDroneClick = (droneObj) => {
+    if (selectedDrone && selectedDrone.name === droneObj.name) {
+      setSelectedDrone(null); // Hide details if same drone clicked again
+    } else {
+      setSelectedDrone(droneObj);
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar onLogin={() => setShowLogin(true)} />
       <main className="flex flex-1 pt-16">
-        <div className="flex-1">
-          <MapView drone={drone} />
+        <div className={selectedDrone ? "flex-1" : "flex-1 w-full"}>
+          <MapView drone={drone} onDroneClick={handleDroneClick} />
         </div>
-        <DroneDetails drone={drone} />
+        {selectedDrone && <DroneDetails selectedDrone={selectedDrone} />}
       </main>
       {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
     </div>
