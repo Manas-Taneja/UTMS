@@ -1,6 +1,27 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export default function DroneDetails({ selectedDrone, onClose }) {
+  const detailsRef = useRef(null);
+  const [isShown, setIsShown] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+
+  useEffect(() => {
+    // On mount, we trigger the transition by updating state.
+    // requestAnimationFrame ensures the component has rendered once
+    // with the initial (off-screen) state before the update.
+    const animationFrameId = requestAnimationFrame(() => {
+      setIsShown(true);
+    });
+    return () => cancelAnimationFrame(animationFrameId);
+  }, []);
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      onClose();
+    }, 300); // Match transition duration
+  };
+
   if (!selectedDrone) return null;
 
   // Sample flight-style data to enrich the overlay
@@ -40,7 +61,10 @@ export default function DroneDetails({ selectedDrone, onClose }) {
 
   return (
     <div className="fixed inset-0 z-40 pointer-events-none">
-      <div className="absolute left-4 top-20 w-[340px] max-w-[90vw] bg-slate-900/95 backdrop-blur-sm text-slate-100 rounded-lg shadow-lg border border-slate-700 pointer-events-auto overflow-hidden transition-transform duration-300 translate-x-0">
+      <div
+        ref={detailsRef}
+        className={`absolute left-4 top-20 w-[340px] max-w-[90vw] bg-slate-900/95 backdrop-blur-sm text-slate-100 rounded-lg shadow-lg border border-slate-700 pointer-events-auto overflow-hidden transition-transform duration-300 ${isShown && !isClosing ? 'translate-x-0' : '-translate-x-[360px]'}`}
+      >
         {/* Header bar */}
         <div className="flex items-center justify-between px-3 py-2 bg-slate-800/80">
           <div className="flex items-center gap-2 text-sm">
@@ -54,7 +78,7 @@ export default function DroneDetails({ selectedDrone, onClose }) {
           </div>
           <button
             className="text-slate-400 hover:text-white text-xl"
-            onClick={onClose}
+            onClick={handleClose}
             aria-label="Close details"
           >
             &times;
@@ -128,13 +152,13 @@ export default function DroneDetails({ selectedDrone, onClose }) {
               <div><span className="text-slate-400">Status:</span> <span className="text-slate-200 font-medium">{selectedDrone.status}</span></div>
             </div>
             <div className="space-y-1">
-              <div className="text-slate-300">Aircraft type <span className="text-slate-400">({sample.aircraft.typeCode})</span></div>
+              <div className="text-slate-300">Aircraft type <span className="text-slate-400">({selectedDrone.type})</span></div>
               <div className="text-slate-200 font-semibold">{sample.aircraft.typeName}</div>
               <div className="pt-1 border-t border-slate-700" />
-              <div className="text-slate-300">Registration</div>
-              <div className="text-slate-200 font-semibold">{sample.aircraft.registration}</div>
-              <div className="text-slate-300">Country of reg.</div>
-              <div className="text-slate-200 font-semibold">{sample.aircraft.country}</div>
+              <div className="text-slate-300">No. of wings</div>
+              <div className="text-slate-200 font-semibold">{selectedDrone.wings}</div>
+              <div className="text-slate-300">Pilot</div>
+              <div className="text-slate-200 font-semibold">{selectedDrone.pilot}</div>
             </div>
           </div>
         </div>

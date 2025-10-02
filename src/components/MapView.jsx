@@ -8,7 +8,7 @@ export default function MapView({ drone, drones = [], onDroneClick }) {
   const markerRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const clickListenerRef = useRef(null);
-  const nightOverlayRef = useRef(null);
+  const nightOverlayRef = useRef([]);
   const overlayTimerRef = useRef(null);
   const multiMarkersRef = useRef([]); // [{ marker, root, listener }]
   const [isMapReady, setIsMapReady] = useState(false);
@@ -26,7 +26,7 @@ export default function MapView({ drone, drones = [], onDroneClick }) {
 
         mapInstanceRef.current = new window.google.maps.Map(mapRef.current, {
           center: { lat: drone.lat, lng: drone.lng },
-          zoom: 3,
+          zoom: 4,
           mapId: "UTMS-GMAPS",
         
           disableDefaultUI: true
@@ -35,6 +35,7 @@ export default function MapView({ drone, drones = [], onDroneClick }) {
 
         // Create a container for the React component
         const droneElement = document.createElement("div");
+        droneElement.className = 'drone-marker-content';
         droneElement.style.cssText = `
           width: 32px; 
           height: 32px; 
@@ -64,7 +65,8 @@ export default function MapView({ drone, drones = [], onDroneClick }) {
         });
 
         if (onDroneClick) {
-          clickListenerRef.current = markerRef.current.addListener("click", () => {
+          clickListenerRef.current = markerRef.current.addListener("click", (e) => {
+            e.domEvent.stopPropagation();
             onDroneClick(drone);
           });
         }
@@ -100,13 +102,13 @@ export default function MapView({ drone, drones = [], onDroneClick }) {
           return antiSolar;
         };
 
-        const getNightEllipsePath = (date) => {
+        const getNightEllipsePath = (date, scale = 1) => {
           const center = getApproxAntiSolarCenter(date);
           const centerLatRad = center.lat * Math.PI / 180;
 
           // Semi-axes in degrees; longitude axis adjusted by cos(latitude)
-          const semiLat = 75; // north-south radius
-          const semiLngAtEquator = 110; // east-west radius at equator
+          const semiLat = 75 * scale; // north-south radius
+          const semiLngAtEquator = 110 * scale; // east-west radius at equator
           const semiLng = semiLngAtEquator * Math.max(0.3, Math.cos(centerLatRad));
 
           const points = [];
@@ -124,17 +126,28 @@ export default function MapView({ drone, drones = [], onDroneClick }) {
         const drawEllipseOverlay = () => {
           try {
             const now = new Date();
-            const path = getNightEllipsePath(now);
-            if (nightOverlayRef.current) {
-              nightOverlayRef.current.setPath(path);
+            const gradientSteps = [
+                { scale: 1.15, opacity: 0.10, color: "#2c1f4c" }, // Evening starting (dusky purple)
+                { scale: 1.08, opacity: 0.15, color: "#1a1433" }, // Evening (twilight blue)
+                { scale: 1.0, opacity: 0.2, color: "#000000" },   // Night beginning (black)
+            ];
+
+            if (nightOverlayRef.current.length > 0) {
+                gradientSteps.forEach((step, i) => {
+                    const path = getNightEllipsePath(now, step.scale);
+                    nightOverlayRef.current[i].setPath(path);
+                });
             } else {
-              nightOverlayRef.current = new window.google.maps.Polygon({
-                paths: path,
-                strokeWeight: 0,
-                fillColor: "#000000",
-                fillOpacity: 0.35,
-                map: mapInstanceRef.current,
-              });
+                nightOverlayRef.current = gradientSteps.map(step => {
+                    const path = getNightEllipsePath(now, step.scale);
+                    return new window.google.maps.Polygon({
+                        paths: path,
+                        strokeWeight: 0,
+                        fillColor: step.color,
+                        fillOpacity: step.opacity,
+                        map: mapInstanceRef.current,
+                    });
+                });
             }
           } catch (e) {
             // eslint-disable-next-line no-console
@@ -177,9 +190,9 @@ export default function MapView({ drone, drones = [], onDroneClick }) {
         markerRef.current.map = null;
         markerRef.current = null;
       }
-      if (nightOverlayRef.current) {
-        nightOverlayRef.current.setMap(null);
-        nightOverlayRef.current = null;
+      if (nightOverlayRef.current.length) {
+        nightOverlayRef.current.forEach((overlay) => overlay.setMap(null));
+        nightOverlayRef.current = [];
       }
       if (overlayTimerRef.current) {
         window.clearInterval(overlayTimerRef.current);
@@ -220,6 +233,7 @@ export default function MapView({ drone, drones = [], onDroneClick }) {
       if (drone && d.id === drone.id) return;
 
       const el = document.createElement("div");
+      el.className = 'drone-marker-content';
       el.style.cssText = `width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; filter: drop-shadow(0 0 1px white);`;
       const root = createRoot(el);
       root.render(
@@ -239,7 +253,10 @@ export default function MapView({ drone, drones = [], onDroneClick }) {
       });
       let listener = null;
       if (onDroneClick) {
-        listener = marker.addListener("click", () => onDroneClick(d));
+        listener = marker.addListener("click", (e) => {
+            e.domEvent.stopPropagation();
+            onDroneClick(d)
+        });
       }
       multiMarkersRef.current.push({ marker, root, listener });
     });

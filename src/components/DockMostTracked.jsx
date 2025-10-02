@@ -3,7 +3,7 @@ import React from "react";
 export default function DockMostTracked({ items = [] }) {
   return (
     <div className="pointer-events-auto relative flex flex-col overflow-hidden rounded-lg bg-slate-900/95 text-slate-300 shadow-lg border border-slate-700 w-[340px] max-w-[90vw]">
-        <header className="flex cursor-pointer items-center justify-between px-3 py-2.5">
+        <header className="flex cursor-pointer items-center justify-between px-2 py-1.5">
           <div className="flex flex-1 items-center space-x-2 font-semibold">
             <span className="text-sm">Most tracked drones</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="14" aria-hidden>
@@ -22,9 +22,9 @@ export default function DockMostTracked({ items = [] }) {
         <div className="flex flex-1 flex-col overflow-hidden bg-slate-950">
           <div className="flex-1 overflow-y-auto px-2 py-1">
             {items.map((it, idx) => (
-              <div key={it.id} className="cursor-pointer rounded-md bg-slate-800/80 px-2 py-1.5 hover:bg-slate-800 mt-2">
+              <div key={it.id} className="cursor-pointer rounded-md bg-slate-800/80 px-2 py-1 hover:bg-slate-800 mt-1">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center overflow-hidden text-md uppercase">
+                  <div className="flex items-center overflow-hidden text-sm uppercase">
                     <span className="font-semibold mr-1">{idx + 1}.</span>
                     <span className="font-semibold uppercase truncate max-w-[7rem]">{it.name}</span>
                     <span className="inline-flex h-4 items-center rounded px-1 text-[10px] font-semibold bg-blue-600 text-white ml-2">
@@ -32,10 +32,10 @@ export default function DockMostTracked({ items = [] }) {
                     </span>
                   </div>
                   <div className="flex items-center space-x-2 text-yellow-500">
-                    <span className="text-sm font-semibold">{it.altitude} m</span>
+                    <span className="text-xs font-semibold">{it.altitude} m</span>
                   </div>
                 </div>
-                <div className="mt-1 flex items-center space-x-1 whitespace-nowrap text-sm">
+                <div className="mt-1 flex items-center space-x-1 whitespace-nowrap text-xs">
                   <span className="truncate">{it.status}</span>
                   <span className="inline-flex h-4 items-center rounded px-1 text-[10px] font-semibold border border-slate-700 text-slate-400">
                     <span>{it.id}</span>
@@ -44,7 +44,7 @@ export default function DockMostTracked({ items = [] }) {
               </div>
             ))}
           </div>
-          <div className="flex h-4 items-end justify-center bg-slate-900 pb-1">
+          <div className="flex h-3 items-end justify-center bg-slate-900 pb-1">
             <div className="h-1 w-12 shrink-0 rounded-full bg-slate-700" />
           </div>
         </div>

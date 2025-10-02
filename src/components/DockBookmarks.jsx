@@ -2,8 +2,8 @@ import React from "react";
 
 export default function DockBookmarks() {
   return (
-    <div className="pointer-events-auto relative flex flex-col overflow-hidden rounded-lg bg-slate-900/95 text-slate-300 shadow-lg border border-slate-700 w-[340px] max-w-[90vw]" style={{height: 316}}>
-      <header className="flex cursor-pointer items-center justify-between px-3 py-2.5">
+    <div className="pointer-events-auto relative flex flex-col overflow-hidden rounded-lg bg-slate-900/95 text-slate-300 shadow-lg border border-slate-700 w-[340px] max-w-[90vw]">
+      <header className="flex cursor-pointer items-center justify-between px-2 py-1.5">
         <div className="flex flex-1 items-center space-x-2 font-semibold">
           <span className="text-sm">Bookmarks</span>
           <span>
@@ -21,22 +21,22 @@ export default function DockBookmarks() {
         <div className="h-0.5 w-full bg-slate-800" />
         <div className="flex-1 flex flex-col overflow-hidden">
           <div className="flex-1 flex items-center justify-center p-2">
-            <div className="mx-0 my-auto flex flex-col items-center justify-center space-y-2 rounded-md border border-slate-800 p-2 text-white">
-              <p className="text-center text-sm">
+            <div className="mx-0 my-auto flex flex-col items-center justify-center space-y-1 rounded-md border border-slate-800 p-1 text-white">
+              <p className="text-center text-xs">
                 Create a free account to add bookmarks
               </p>
             </div>
           </div>
           <div className="shrink-0 pb-1 pt-3">
-            <button className="m-0 flex w-full items-center justify-center py-0 text-sm font-semibold text-blue-400 hover:text-blue-200">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" className="fill-current mr-1 size-5">
+            <button className="m-0 flex w-full items-center justify-center py-0 text-xs font-semibold text-blue-400 hover:text-blue-200">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" className="fill-current mr-1 size-4">
                 <path fillRule="evenodd" d="M18.09 11.397h-5.487V5.97c0-.362-.241-.603-.603-.603s-.603.241-.603.603v5.427H5.97c-.362 0-.603.241-.603.603s.241.603.603.603h5.427v5.487c0 .362.241.604.603.604s.603-.242.603-.604v-5.487h5.487c.362 0 .604-.241.604-.603a.604.604 0 0 0-.604-.603M12 0C5.367 0 0 5.367 0 12s5.367 12 12 12 12-5.367 12-12S18.633 0 12 0m0 22.794A10.783 10.783 0 0 1 1.206 12C1.206 6.03 6.03 1.206 12 1.206S22.794 6.03 22.794 12 17.97 22.794 12 22.794" clipRule="evenodd"></path>
               </svg>
               <span>Add bookmark</span>
             </button>
           </div>
         </div>
-        <div className="flex h-4 items-end justify-center bg-slate-900 pb-1">
+        <div className="flex h-3 items-end justify-center bg-slate-900 pb-1">
           <div className="h-1 w-12 shrink-0 rounded-full bg-slate-700" />
         </div>
       </div>

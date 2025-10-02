@@ -6,9 +6,11 @@ export const useDroneSelection = () => {
   // Stable handler for clicking the drone marker
   const handleDroneClick = useCallback((droneObj) => {
     setSelectedDrone((prevSelected) => {
-      if (prevSelected && prevSelected.name === droneObj.name) {
-        return null; // Hide details if same drone clicked again
+      // If the same drone is clicked, toggle it off (close)
+      if (prevSelected && prevSelected.id === droneObj.id) {
+        return null;
       }
+      // Otherwise, switch to the new drone
       return droneObj;
     });
   }, []);

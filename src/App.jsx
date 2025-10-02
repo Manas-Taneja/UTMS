@@ -5,9 +5,8 @@ import DroneDetails from "./components/DroneDetails";
 import LoginModal from "./components/LoginModal";
 import { useDroneSelection } from "./components/useDroneSelection";
 import { sampleDrones } from "./data/sampleDrones";
-import DockMostTracked from "./components/DockMostTracked";
-import DockDisruptions from "./components/DockDisruptions";
-import DockBookmarks from "./components/DockBookmarks";
+import LeftDocks from "./components/LeftDocks";
+import LoginPage from "./components/LoginPage";
 
 
 const drone = {
@@ -24,15 +23,25 @@ const drone = {
 export default function App() {
   const [showLogin, setShowLogin] = useState(false);
   const { selectedDrone, handleDroneClick, closeDroneDetails } = useDroneSelection();
+  const [loggedInUser, setLoggedInUser] = useState(null);
+
+  const handleLogin = (username) => {
+    setLoggedInUser(username);
+    setShowLogin(false); // Close modal on successful login
+  };
+
+  const handleLogout = () => {
+    setLoggedInUser(null);
+  };
+
+  if (!loggedInUser) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
 
   return (
-    <div className="relative">
-      <Navbar onLogin={() => setShowLogin(true)} />
-      <div className={`fixed left-4 top-20 z-40 space-y-3 flex flex-col pointer-events-none transition-transform duration-300 ${selectedDrone ? '-translate-x-[360px]' : 'translate-x-0'}`}>
-        <div className="pointer-events-auto"><DockMostTracked items={sampleDrones.slice(0, 5)} /></div>
-        <div className="pointer-events-auto"><DockDisruptions items={[]} /></div>
-        <div className="pointer-events-auto"><DockBookmarks /></div>
-      </div>
+    <div className="relative h-screen bg-slate-900">
+      <Navbar onLogin={() => setShowLogin(true)} onLogout={handleLogout} loggedInUser={loggedInUser} />
+      <LeftDocks selectedDrone={selectedDrone} />
       <MapView drone={drone} drones={sampleDrones} onDroneClick={handleDroneClick} />
       {selectedDrone && <DroneDetails selectedDrone={selectedDrone} onClose={closeDroneDetails} />}
       {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}

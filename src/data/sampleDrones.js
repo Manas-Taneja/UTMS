@@ -12,6 +12,9 @@ export const sampleDrones = [
     speed: 12,
     status: "En route",
     slug: "delivery",
+    type: "Quad-copter",
+    wings: 4,
+    pilot: "Jane Doe"
   },
   {
     id: "DRN-SURV-014",
@@ -23,6 +26,9 @@ export const sampleDrones = [
     speed: 8,
     status: "Patrolling",
     slug: "surveillance",
+    type: "Fixed-wing",
+    wings: 2,
+    pilot: "John Smith"
   },
   {
     id: "DRN-EMR-911",
@@ -34,6 +40,9 @@ export const sampleDrones = [
     speed: 15,
     status: "Responding",
     slug: "emergency",
+    type: "Hexa-copter",
+    wings: 6,
+    pilot: "Will Johnson"
   },
   {
     id: "DRN-MAP-302",
@@ -45,6 +54,9 @@ export const sampleDrones = [
     speed: 5,
     status: "Surveying",
     slug: "mapping",
+    type: "Fixed-wing",
+    wings: 2,
+    pilot: "James Brown"
   },
   {
     id: "DRN-STD-777",
@@ -56,6 +68,9 @@ export const sampleDrones = [
     speed: 10,
     status: "Hovering",
     slug: "standard",
+    type: "Quad-copter",
+    wings: 4,
+    pilot: "Robert Davis"
   },
 ];
 

@@ -3,7 +3,7 @@ import React from "react";
 export default function DockDisruptions({ items = [] }) {
   return (
     <div className="pointer-events-auto relative flex flex-col overflow-hidden rounded-lg bg-slate-900/95 text-slate-300 shadow-lg border border-slate-700 w-[340px] max-w-[90vw]">
-      <header className="flex cursor-pointer items-center justify-between px-3 py-2.5">
+      <header className="flex cursor-pointer items-center justify-between px-2 py-1.5">
         <div className="flex flex-1 items-center space-x-2 font-semibold">
           <span className="text-sm">Airport disruptions</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="14" aria-hidden>
@@ -22,26 +22,26 @@ export default function DockDisruptions({ items = [] }) {
       <div className="flex flex-1 flex-col overflow-hidden bg-slate-950">
         <div className="flex-1 overflow-y-auto px-2 pb-2">
           {items.length === 0 && (
-            <div className="m-2 flex flex-col rounded-md border border-slate-700 p-2 text-slate-200">
-              <p className="text-sm">No disruptions sample data yet.</p>
+            <div className="m-2 flex flex-col rounded-md border border-slate-700 p-1 text-slate-200">
+              <p className="text-xs">No disruptions sample data yet.</p>
             </div>
           )}
           {items.map((it) => (
-            <div key={it.code} className="w-full h-14 rounded-md bg-slate-800/80 px-2 py-1.5 hover:bg-slate-800 mt-2 flex items-center justify-between">
+            <div key={it.code} className="w-full rounded-md bg-slate-800/80 px-2 py-1 hover:bg-slate-800 mt-1 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="font-semibold text-white truncate max-w-[165px]">{it.city}</div>
                 <span className="inline-flex h-4 items-center rounded px-1 text-[10px] font-semibold border border-slate-700 text-slate-400">{it.code}</span>
               </div>
               <div className="flex items-center gap-3 text-white">
                 <div className={`size-2 rounded-full ${it.arrivalsIndex >= 3.5 ? 'bg-red-600' : it.arrivalsIndex >= 2 ? 'bg-yellow-500' : 'bg-green-400'}`} />
-                <div className="text-sm">{it.arrivalsIndex.toFixed(1)}</div>
+                <div className="text-xs">{it.arrivalsIndex.toFixed(1)}</div>
                 <div className={`size-2 rounded-full ${it.departuresIndex >= 3.5 ? 'bg-red-600' : it.departuresIndex >= 2 ? 'bg-yellow-500' : 'bg-green-400'}`} />
-                <div className="text-sm">{it.departuresIndex.toFixed(1)}</div>
+                <div className="text-xs">{it.departuresIndex.toFixed(1)}</div>
               </div>
             </div>
           ))}
         </div>
-        <div className="flex h-4 items-end justify-center bg-slate-900 pb-1">
+        <div className="flex h-3 items-end justify-center bg-slate-900 pb-1">
           <div className="h-1 w-12 shrink-0 rounded-full bg-slate-700" />
         </div>
       </div>
